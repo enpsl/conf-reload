@@ -1,7 +1,7 @@
 package main
 
 import (
-	conf_relod "conf-reload"
+	"conf-reload"
 	"fmt"
 	"os"
 	"time"
@@ -17,10 +17,10 @@ func main() {
 	if _, err := os.Stat(f); err != nil {
 		f = "_example/example.toml"
 	}
-	conf_relod.LoadEngine(f, conf_relod.WithLevelSplit("."), conf_relod.WithLogLevel(0))
+	conf_reload.LoadEngine(f, conf_reload.WithLevelSplit("."), conf_reload.WithLogLevel(0))
 	var http = &Http{}
 	for {
-		err := conf_relod.DecodeToStruct("server.http", http)
+		err := conf_reload.DecodeToStruct("server.http", http)
 		if err != nil {
 			panic(err)
 		}
