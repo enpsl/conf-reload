@@ -31,6 +31,7 @@ type FsBroker struct {
 	dir          string
 	abs          string
 	ext          FileExtType
+	wg           sync.WaitGroup
 }
 
 type FileExtType string
@@ -85,7 +86,6 @@ func NewFs(path string, logger *log.Logger) (error, *FsBroker) {
 	fs.dir = dir
 	fs.logger = logger
 	fs.ext = ext_type
-	go fs.Watch()
 	return nil, fs
 }
 
@@ -105,18 +105,20 @@ func (fs *FsBroker) LoadContent() ([]byte, error) {
 func (fs *FsBroker) Watch() {
 	w, err := fsnotify.NewWatcher()
 	if err != nil {
-		panic("new file watcher error:" + err.Error())
+		fs.logger.Fatalf("new file watcher error:%w", err.Error())
 	}
 	defer w.Close()
 
 	configFile := filepath.Clean(fs.abs)
 	realConfigFile, _ := filepath.EvalSymlinks(fs.abs)
 
-	done := make(chan bool)
+	fs.wg.Add(1)
 	go func() {
+		defer fs.wg.Done()
 		for {
 			select {
 			case event := <-w.Events:
+				// Compatible with soft links
 				currentConfigFile, _ := filepath.EvalSymlinks(fs.abs)
 				const writeOrCreateMask = fsnotify.Write | fsnotify.Create
 				if (filepath.Clean(event.Name) == configFile && event.Op&writeOrCreateMask != 0) ||
@@ -126,7 +128,7 @@ func (fs *FsBroker) Watch() {
 					fs.notifyCh <- struct{}{}
 				}
 			case err := <-w.Errors:
-				fmt.Println("read watch error:" + err.Error())
+				fs.logger.Errorf("read watch error:" + err.Error())
 			}
 		}
 	}()
@@ -134,7 +136,7 @@ func (fs *FsBroker) Watch() {
 	if err != nil {
 		fs.logger.Fatal(err)
 	}
-	<-done
+	fs.wg.Wait()
 }
 
 func (fs *FsBroker) Decode(input interface{}, output interface{}, weaklyTypedInput bool) error {

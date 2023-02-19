@@ -6,7 +6,7 @@ package app
 
 const PackageName = "conf-reload"
 
-const Version = "v0.0.0"
+const Version = "v1.0.0"
 
 const DefaultLevelSplit = "."
 

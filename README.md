@@ -19,27 +19,39 @@ Conf-Reload是一个Go库，用于常驻进程模式下配置文件信息获取�
 - 基于`fsnotify`库实现了IO多路复用的事件通知机制，性能较好
 - 配置结构获取提供多种类型转化api
 
+# Stability and Compatibility
+
+**Status**: 目前处于功能拓展中，不过基础功能已经完善，不会在改变api结构
+
+> ☝️ **Important Note**: v1.0.0之前为beta版本. v1.0.0版本为当前stable版本.
+
+
 # Quick Start
+
+```bash
+go get -u github.com/enpsl/conf-reload
+```
+
+## _example
+_example目录是测试用例，可`copy`到当前项目下测试运行
 
 配置引擎加载,加载一次即可
 ```go
 f = "_example/example.toml"
 conf_reload.LoadEngine(f, conf_relod.WithLevelSplit("."), conf_relod.WithLogLevel(0))
 ```
-`conf_relod.WithLevelSplit(".")`配置信息分隔符设置，默认是`.`
-`conf_relod.WithLogLevel(0)`日志级别设置，低于当前设置级别的日志记录不会在终端输出，可按照下面展示的级别进行设置
+LoadEngine的一些[option](https://pkg.go.dev/github.com/enpsl/conf-reload#Option)选项说明:
+`WithLevelSplit(string)`配置信息分隔符设置，默认是`.`
 
-```go
-DebugLevel = 0
+`WithWeaklyTypedInput(bool)` 调用`DecodeToStruct`时,会启用弱类型转化
 
-InfoLevel = 1
+`WithLogger(Logger)` 外部日志接入，需实现[Logger](https://pkg.go.dev/github.com/enpsl/conf-reload@v1.0.0#Logger)，不传入会默认使用项目自带终端输出方式记录日志
 
-WarnLevel = 2
+`WithCapacity(int)` `LRU`缓存容量设置，低于当前设置级别的日志记录不会在终端输出，可按照下面展示的级别进行设置
 
-ErrorLevel = 3
+`WithWatched(int)` 是否开启`Broker Watch`检测，某些场景如命令行模式，不需要热加载，可关闭此选项即可停止文件监听
 
-FatalLevel = 4
-```
+`WithLogLevel(int)`日志[级别](https://pkg.go.dev/github.com/enpsl/conf-reload@v1.0.0/internal/log#Level)设置，低于当前设置级别的日志记录不会在终端输出，可按照下面展示的级别进行设置
 
 配置信息读取,可更改文件内容观察文件变化情况
 ```go
@@ -53,20 +65,22 @@ for {
     time.Sleep(2 * time.Second)
 }
 ```
-
+输出示例:
 ```bash
-conf-reload@v0.0.0: pid=30342 2023/02/19 09:04:04.466710 DEBUG: map[server:map[config:map[connection:false depends:[tcp ip] publish:2023-02-19 timeout:10s] http:map[host:0.0.0.0 port:8080]]]
-conf-reload@v0.0.0: pid=30342 2023/02/19 09:04:04.466747 DEBUG: map[config:map[connection:false depends:[tcp ip] publish:2023-02-19 timeout:10s] http:map[host:0.0.0.0 port:8080]]
+conf-reload-test (main) ✗ go run _example/example.go
+conf-reload@v1.0.0: pid=16749 2023/02/19 12:37:42.571884 DEBUG: map[server:map[config:map[connection:false depends:[tcp ip] publish:2023-02-19 timeout:10s] http:map[host:0.0.0.0 port:8080]]]
+conf-reload@v1.0.0: pid=16749 2023/02/19 12:37:42.571917 DEBUG: map[config:map[connection:false depends:[tcp ip] publish:2023-02-19 timeout:10s] http:map[host:0.0.0.0 port:8080]]
 &{0.0.0.0 8080}
 &{0.0.0.0 8080}
 &{0.0.0.0 8080}
-&{0.0.0.0 8080}
-conf-reload@v0.0.0: pid=30342 2023/02/19 09:04:10.586570 DEBUG: modified file:/Users/kuailexingqiu/go/src/conf-reload/_example/example.toml, /Users/kuailexingqiu/go/src/conf-reload/_example/example.toml
-conf-reload@v0.0.0: pid=30342 2023/02/19 09:04:10.586780 DEBUG: map[server:map[config:map[connection:false depends:[tcp ip] publish:2023-02-19 timeout:10s] http:map[host:0.0.0.0 port:80801]]]
-conf-reload@v0.0.0: pid=30342 2023/02/19 09:04:12.470547 DEBUG: map[config:map[connection:false depends:[tcp ip] publish:2023-02-19 timeout:10s] http:map[host:0.0.0.0 port:80801]]
-&{0.0.0.0 80801}
-&{0.0.0.0 80801}
+conf-reload@v1.0.0: pid=16749 2023/02/19 12:37:46.693127 DEBUG: modified file:/Users/kuailexingqiu/go/src/conf-reload-test/_example/example.toml, /Users/kuailexingqiu/go/src/conf-reload-test/_example/example.toml
+conf-reload@v1.0.0: pid=16749 2023/02/19 12:37:46.693437 DEBUG: map[server:map[config:map[connection:false depends:[tcp ip] publish:2023-02-19 timeout:10s] http:map[host:0.0.0.0 port:8081]]]
+conf-reload@v1.0.0: pid=16749 2023/02/19 12:37:48.572885 DEBUG: map[config:map[connection:false depends:[tcp ip] publish:2023-02-19 timeout:10s] http:map[host:0.0.0.0 port:8081]]
+&{0.0.0.0 8081}
+&{0.0.0.0 8081}
 ```
+
+如果想了解更多api，See [godoc](https://pkg.go.dev/github.com/enpsl/conf-reload@v1.0.0#pkg-functions)
 
 # License
 Copyright (c) 2023-present enpsl. conf-reload is free and open-source software licensed under the MIT License. 

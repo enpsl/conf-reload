@@ -23,7 +23,8 @@ type Engine struct {
 	LocalStorage     *base.LRUCache         // fast cache
 	Configure        map[string]interface{} // original config
 	Broker           base.Broker            // broker
-	Capacity         int
+	Capacity         int                    // LRU Cache cap
+	Watched          bool                   // watched switch
 }
 
 type Option func(*Engine)
@@ -76,9 +77,17 @@ func WithLogLevel(level int32) Option {
 	}
 }
 
+// WithCapacity LRU cap options
 func WithCapacity(capacity int) Option {
 	return func(engine *Engine) {
 		engine.Capacity = capacity
+	}
+}
+
+// WithWatched Broker watch swich options
+func WithWatched(watched bool) Option {
+	return func(engine *Engine) {
+		engine.Watched = watched
 	}
 }
 
@@ -90,6 +99,7 @@ func NewEngine() *Engine {
 		LevelSplit: app.DefaultLevelSplit,
 		Configure:  make(map[string]interface{}),
 		Capacity:   app.DefaultCapacity,
+		Watched:    true,
 	}
 }
 
@@ -121,6 +131,10 @@ func (e *Engine) Load(path string, opts ...Option) error {
 		e.Logger.Fatal(err)
 	}
 
+	if !e.Watched {
+		return nil
+	}
+	go e.Broker.Watch()
 	go func() {
 		for range e.Broker.Notify() {
 			if content, err := e.Broker.LoadContent(); err == nil {

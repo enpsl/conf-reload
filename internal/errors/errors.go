@@ -24,12 +24,16 @@ func ErrFormat(errType ErrType, err error) error {
 }
 
 var (
-	// ErrInvalidFile indicates that we can't get valid files
+	// ErrInvalidFilePath indicates that we can't get valid files
 	ErrInvalidFilePath ErrType = errors.New("invalid file path")
-	ErrInvalidFileExt  ErrType = errors.New("invalid file ext type")
-	ErrUnmarshaller    ErrType = errors.New("unmarshal error")
-	ErrInvalidKey      ErrType = errors.New("key is invalid")
-	ErrBrokerDecode    ErrType = errors.New("broker can not decode")
+	// ErrInvalidFileExt indicates that we can't get valid file ext type
+	ErrInvalidFileExt ErrType = errors.New("invalid file ext type")
+	// ErrUnmarshaller indicates that we can't unmarshal content
+	ErrUnmarshaller ErrType = errors.New("unmarshal error")
+	// ErrInvalidKey indicates that we can't get valid key
+	ErrInvalidKey ErrType = errors.New("key is invalid")
+	// ErrBrokerDecode indicates that broker can't decode content
+	ErrBrokerDecode ErrType = errors.New("broker can not decode")
 )
 
 /***************************************************************
