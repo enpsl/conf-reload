@@ -41,6 +41,7 @@ f = "_example/example.toml"
 conf_reload.LoadEngine(f, conf_relod.WithLevelSplit("."), conf_relod.WithLogLevel(0))
 ```
 LoadEngine的一些[option](https://pkg.go.dev/github.com/enpsl/conf-reload#Option)选项说明:
+
 - `WithLevelSplit(string)`配置信息分隔符设置，默认是`.`
 
 - `WithWeaklyTypedInput(bool)` 调用`DecodeToStruct`时,会启用弱类型转化
