@@ -5,7 +5,7 @@
 package base
 
 import (
-	"conf-reload/internal/errors"
+	"github.com/enpsl/conf-reload/internal/errors"
 	"os"
 	"strings"
 )
