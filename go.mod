@@ -1,4 +1,4 @@
-module conf-reload
+module github.com/enpsl/conf-reload
 
 go 1.19
 
