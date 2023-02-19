@@ -1,8 +1,8 @@
 package main
 
 import (
-	"conf-reload"
 	"fmt"
+	"github.com/enpsl/conf-reload"
 	"os"
 	"time"
 )

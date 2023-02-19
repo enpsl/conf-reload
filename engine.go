@@ -1,11 +1,11 @@
 package conf_reload
 
 import (
-	"conf-reload/internal/app"
-	"conf-reload/internal/base"
-	"conf-reload/internal/errors"
-	"conf-reload/internal/fs"
-	"conf-reload/internal/log"
+	"github.com/enpsl/conf-reload/internal/app"
+	"github.com/enpsl/conf-reload/internal/base"
+	"github.com/enpsl/conf-reload/internal/errors"
+	"github.com/enpsl/conf-reload/internal/fs"
+	"github.com/enpsl/conf-reload/internal/log"
 	"github.com/spf13/cast"
 	"reflect"
 	"strings"

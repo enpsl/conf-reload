@@ -3,8 +3,8 @@
 package log
 
 import (
-	"conf-reload/internal/app"
 	"fmt"
+	"github.com/enpsl/conf-reload/internal/app"
 	"io"
 	stdlog "log"
 	"os"

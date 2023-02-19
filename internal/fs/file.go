@@ -7,12 +7,12 @@
 package fs
 
 import (
-	"conf-reload/internal/base"
-	"conf-reload/internal/errors"
-	"conf-reload/internal/log"
 	"encoding/json"
 	"fmt"
 	"github.com/BurntSushi/toml"
+	"github.com/enpsl/conf-reload/internal/base"
+	"github.com/enpsl/conf-reload/internal/errors"
+	"github.com/enpsl/conf-reload/internal/log"
 	"github.com/fsnotify/fsnotify"
 	"github.com/mitchellh/mapstructure"
 	yaml "gopkg.in/yaml.v3"

@@ -1,7 +1,7 @@
 package fs
 
 import (
-	"conf-reload/internal/log"
+	"github.com/enpsl/conf-reload/internal/log"
 	"os"
 	"testing"
 )

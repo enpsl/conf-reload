@@ -2,8 +2,8 @@ package log
 
 import (
 	"bytes"
-	"conf-reload/internal/app"
 	"fmt"
+	"github.com/enpsl/conf-reload/internal/app"
 	"regexp"
 	"testing"
 )
