@@ -41,17 +41,17 @@ f = "_example/example.toml"
 conf_reload.LoadEngine(f, conf_relod.WithLevelSplit("."), conf_relod.WithLogLevel(0))
 ```
 LoadEngine的一些[option](https://pkg.go.dev/github.com/enpsl/conf-reload#Option)选项说明:
-`WithLevelSplit(string)`配置信息分隔符设置，默认是`.`
+- `WithLevelSplit(string)`配置信息分隔符设置，默认是`.`
 
-`WithWeaklyTypedInput(bool)` 调用`DecodeToStruct`时,会启用弱类型转化
+- `WithWeaklyTypedInput(bool)` 调用`DecodeToStruct`时,会启用弱类型转化
 
-`WithLogger(Logger)` 外部日志接入，需实现[Logger](https://pkg.go.dev/github.com/enpsl/conf-reload@v1.0.0#Logger)，不传入会默认使用项目自带终端输出方式记录日志
+- `WithLogger(Logger)` 外部日志接入，需实现[Logger](https://pkg.go.dev/github.com/enpsl/conf-reload@v1.0.0#Logger)，不传入会默认使用项目自带终端输出方式记录日志
 
-`WithCapacity(int)` `LRU`缓存容量设置，低于当前设置级别的日志记录不会在终端输出，可按照下面展示的级别进行设置
+- `WithCapacity(int)` `LRU`缓存容量设置，低于当前设置级别的日志记录不会在终端输出，可按照下面展示的级别进行设置
 
-`WithWatched(int)` 是否开启`Broker Watch`检测，某些场景如命令行模式，不需要热加载，可关闭此选项即可停止文件监听
+- `WithWatched(int)` 是否开启`Broker Watch`检测，某些场景如命令行模式，不需要热加载，可关闭此选项即可停止文件监听
 
-`WithLogLevel(int)`日志[级别](https://pkg.go.dev/github.com/enpsl/conf-reload@v1.0.0/internal/log#Level)设置，低于当前设置级别的日志记录不会在终端输出，可按照下面展示的级别进行设置
+- `WithLogLevel(int)`日志[级别](https://pkg.go.dev/github.com/enpsl/conf-reload@v1.0.0/internal/log#Level)设置，低于当前设置级别的日志记录不会在终端输出，可按照下面展示的级别进行设置
 
 配置信息读取,可更改文件内容观察文件变化情况
 ```go
