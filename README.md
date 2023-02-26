@@ -52,8 +52,7 @@ LoadEngine的一些[option](https://pkg.go.dev/github.com/enpsl/conf-reload#Opti
 
 - `WithWatched(int)` 是否开启`Broker Watch`检测，某些场景如命令行模式，不需要热加载，可关闭此选项即可停止文件监听
 
-- `WithLogLevel(int)`日志[级别](https://pkg.go.dev/github.com/enpsl/conf-reload@v1.0.0/internal/log#Level)设置，低于当前设置级别的日志记录不会在终端输出，可按照下面展示的级别进行设置
-
+- `WithLogLevel(int)`日志[级别](https://pkg.go.dev/github.com/enpsl/conf-reload@v1.0.0/internal/log#Level)设置，低于当前设置级别的日志记录不会在终端输出
 配置信息读取,可更改文件内容观察文件变化情况
 ```go
 var http = &Http{}
